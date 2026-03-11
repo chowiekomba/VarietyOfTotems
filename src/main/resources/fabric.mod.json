@@ -8,8 +8,8 @@
 		"chowiekomba"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/chowiekomba/VarietyOfTotems",
+		"sources": "https://github.com/chowiekomba/VarietyOfTotems"
 	},
 	"license": "Custom License",
 	"icon": "assets/variety-of-totems/icon.png",
