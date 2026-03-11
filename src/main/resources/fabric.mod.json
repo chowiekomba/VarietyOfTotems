@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "variety-of-totems",
+	"version": "${version}",
+	"name": "variety of totems",
+	"description": "This mod adds more totems to Minecraft.",
+	"authors": [
+		"chowiekomba"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "Custom License",
+	"icon": "assets/variety-of-totems/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"chowie.varietyoftotems.VarietyOfTotems"
+		],
+		"fabric-datagen": [
+			"chowie.varietyoftotems.VarietyOfTotemsDataGenerator"
+		]
+	},
+	"mixins": [
+		"variety-of-totems.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.18.4",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
