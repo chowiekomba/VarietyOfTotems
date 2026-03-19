@@ -1,7 +1,7 @@
 package chowie.varietyoftotems;
 
-import chowie.util.HandleLeaveAndJoin;
-import chowie.util.SpectatorModeTimer;
+import chowie.varietyoftotems.util.HandleLeaveAndJoin;
+import chowie.varietyoftotems.util.SpectatorModeTimer;
 import chowie.varietyoftotems.item.ModItemGroups;
 import chowie.varietyoftotems.item.ModItems;
 import net.fabricmc.api.ModInitializer;

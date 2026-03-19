@@ -1,4 +1,4 @@
-package chowie.util;
+package chowie.varietyoftotems.util;
 
 import chowie.varietyoftotems.VarietyOfTotems;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;

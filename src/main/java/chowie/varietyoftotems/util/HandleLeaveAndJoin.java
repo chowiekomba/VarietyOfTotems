@@ -1,4 +1,4 @@
-package chowie.util;
+package chowie.varietyoftotems.util;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.network.ServerPlayerEntity;

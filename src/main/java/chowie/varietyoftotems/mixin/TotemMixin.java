@@ -1,6 +1,6 @@
 package chowie.varietyoftotems.mixin;
 
-import chowie.util.SpectatorModeTimer;
+import chowie.varietyoftotems.util.SpectatorModeTimer;
 import chowie.varietyoftotems.item.ModItems;
 import chowie.varietyoftotems.mixinaccess.GetPositionAccess;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
