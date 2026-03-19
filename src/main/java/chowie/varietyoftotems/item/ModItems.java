@@ -20,10 +20,13 @@ public class ModItems {
             .maxCount(1).rarity(Rarity.RARE)));
 
     public static final Item BLACK_TOTEM = registerItem("black_totem", new Item(new Item.Settings()
-            .maxDamage(1).rarity(Rarity.EPIC)));
+            .maxCount(1).rarity(Rarity.EPIC)));
 
-    // TODO: Are you adding a new item? Make sure to add it in the inject and WrapOperation methods in TotemMixin.
-    // TODO: Make sure to also add it to the item groups, and the GetTotemMixin WrapOperation
+    public static final Item WHITE_TOTEM = registerItem("white_totem", new Item(new Item.Settings()
+            .maxCount(1)));
+
+    // Are you adding a new item? Make sure to add it in the inject and WrapOperation methods in TotemMixin.
+    // Make sure to also add it to the item groups, and the GetTotemMixin WrapOperation
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(VarietyOfTotems.MOD_ID, name), item);

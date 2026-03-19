@@ -1,5 +1,7 @@
 package chowie.varietyoftotems;
 
+import chowie.util.HandleLeaveAndJoin;
+import chowie.util.SpectatorModeTimer;
 import chowie.varietyoftotems.item.ModItemGroups;
 import chowie.varietyoftotems.item.ModItems;
 import net.fabricmc.api.ModInitializer;
@@ -19,5 +21,8 @@ public class VarietyOfTotems implements ModInitializer {
 
 		ModItems.registerModItems();
 		ModItemGroups.registerModItemGroups();
+		SpectatorModeTimer.register();
+
+		new HandleLeaveAndJoin().init();
 	}
 }

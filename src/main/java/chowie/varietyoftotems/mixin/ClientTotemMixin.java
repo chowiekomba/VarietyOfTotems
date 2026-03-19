@@ -19,6 +19,6 @@ public class ClientTotemMixin {
         // not shown in the code here, but the else statement just returns a normal totem.
         return itemStack.isOf(Items.TOTEM_OF_UNDYING) || itemStack.isOf(ModItems.GREEN_TOTEM) ||
                 itemStack.isOf(ModItems.BLUE_TOTEM) || itemStack.isOf(ModItems.PURPLE_TOTEM) ||
-                itemStack.isOf(ModItems.BLACK_TOTEM);
+                itemStack.isOf(ModItems.BLACK_TOTEM) || itemStack.isOf(ModItems.WHITE_TOTEM);
     }
 }

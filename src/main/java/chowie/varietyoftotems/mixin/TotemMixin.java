@@ -1,6 +1,8 @@
 package chowie.varietyoftotems.mixin;
 
+import chowie.util.SpectatorModeTimer;
 import chowie.varietyoftotems.item.ModItems;
+import chowie.varietyoftotems.mixinaccess.GetPositionAccess;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -15,6 +17,7 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -51,7 +54,7 @@ public abstract class TotemMixin extends Entity {
 	private boolean checkTotem(ItemStack itemStack2, Item item, Operation<Boolean> original) {
         return itemStack2.isOf(Items.TOTEM_OF_UNDYING) || itemStack2.isOf(ModItems.GREEN_TOTEM) ||
                 itemStack2.isOf(ModItems.BLUE_TOTEM) || itemStack2.isOf(ModItems.PURPLE_TOTEM) ||
-				itemStack2.isOf(ModItems.BLACK_TOTEM);
+				itemStack2.isOf(ModItems.BLACK_TOTEM) || itemStack2.isOf(ModItems.WHITE_TOTEM);
     }
 
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), method = "tryUseTotem", cancellable = true)
@@ -120,6 +123,13 @@ public abstract class TotemMixin extends Entity {
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 1000, 5), null);
 			this.getWorld().sendEntityStatus(this, EntityStatuses.USE_TOTEM_OF_UNDYING);
 
+			if (this instanceof GetPositionAccess access) {
+				Vec3d pos = access.varietyoftotems$getPosTenSecAgo();
+				if (pos != null) {
+					this.setPos(pos.getX(), pos.getY(), pos.getZ());
+				}
+			}
+
 			cir.setReturnValue(true);
 		}
 		if (itemStack.isOf(ModItems.BLACK_TOTEM)) {
@@ -144,6 +154,18 @@ public abstract class TotemMixin extends Entity {
 			this.getWorld().sendEntityStatus(this, EntityStatuses.USE_TOTEM_OF_UNDYING);
 
 			cir.setReturnValue(true);
+		}
+		if (itemStack.isOf(ModItems.WHITE_TOTEM)) {
+			this.setHealth(3.0F);
+			this.clearStatusEffects();
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 400), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 800), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 500), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, 400), null);
+
+			if (this instanceof GetPositionAccess) {
+				SpectatorModeTimer.INSTANCE.setTimer((ServerPlayerEntity) (Object) this, 100);
+			}
 		}
 	}
 }

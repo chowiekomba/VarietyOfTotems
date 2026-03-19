@@ -23,5 +23,6 @@ public class ModModelProvider extends FabricModelProvider {
         itemModelGenerator.register(ModItems.PURPLE_TOTEM, Models.GENERATED);
         itemModelGenerator.register(ModItems.BLUE_TOTEM, Models.GENERATED);
         itemModelGenerator.register(ModItems.BLACK_TOTEM, Models.GENERATED);
+        itemModelGenerator.register(ModItems.WHITE_TOTEM, Models.GENERATED);
     }
 }

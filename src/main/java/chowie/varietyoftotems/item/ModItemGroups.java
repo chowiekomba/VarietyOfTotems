@@ -20,6 +20,7 @@ public class ModItemGroups {
                         entries.add(ModItems.PURPLE_TOTEM);
                         entries.add(ModItems.BLUE_TOTEM);
                         entries.add(ModItems.BLACK_TOTEM);
+                        entries.add(ModItems.WHITE_TOTEM);
                     }).build());
 
     public static void registerModItemGroups() {
