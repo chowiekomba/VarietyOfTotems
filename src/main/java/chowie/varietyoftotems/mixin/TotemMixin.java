@@ -87,9 +87,7 @@ public abstract class TotemMixin extends Entity {
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.BAD_OMEN, 2000), null);
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 900), null);
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 900, 5), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 200), null);
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 100, 3), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.LEVITATION, 20), null);
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 700), null);
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.TRIAL_OMEN, 9000), null);
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, 400), null);

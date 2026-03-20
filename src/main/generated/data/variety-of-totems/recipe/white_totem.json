@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "Q": {
+      "item": "minecraft:quartz"
+    },
+    "S": {
+      "item": "variety-of-totems:totem_shard"
+    },
+    "U": {
+      "item": "minecraft:sugar"
+    }
+  },
+  "pattern": [
+    "USU",
+    "SSS",
+    "QSQ"
+  ],
+  "result": {
+    "count": 1,
+    "id": "variety-of-totems:white_totem"
+  }
+}

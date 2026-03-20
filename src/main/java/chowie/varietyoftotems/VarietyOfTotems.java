@@ -1,6 +1,7 @@
 package chowie.varietyoftotems;
 
 import chowie.varietyoftotems.util.HandleLeaveAndJoin;
+import chowie.varietyoftotems.util.ModLootTableEvents;
 import chowie.varietyoftotems.util.SpectatorModeTimer;
 import chowie.varietyoftotems.item.ModItemGroups;
 import chowie.varietyoftotems.item.ModItems;
@@ -22,6 +23,7 @@ public class VarietyOfTotems implements ModInitializer {
 		ModItems.registerModItems();
 		ModItemGroups.registerModItemGroups();
 		SpectatorModeTimer.register();
+		ModLootTableEvents.register();
 
 		new HandleLeaveAndJoin().init();
 	}

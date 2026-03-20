@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "minecraft:coal"
+    },
+    "F": {
+      "item": "minecraft:flint"
+    },
+    "S": {
+      "item": "variety-of-totems:totem_shard"
+    }
+  },
+  "pattern": [
+    "CSC",
+    "SSS",
+    "FSF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "variety-of-totems:black_totem"
+  }
+}

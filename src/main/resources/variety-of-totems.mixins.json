@@ -2,8 +2,10 @@
   "required": true,
   "package": "chowie.varietyoftotems.mixin",
   "compatibilityLevel": "JAVA_21",
+  "client": [
+    "ClientTotemMixin"
+  ],
   "mixins": [
-    "ClientTotemMixin",
     "GetPositionMixin",
     "TotemMixin"
   ],
