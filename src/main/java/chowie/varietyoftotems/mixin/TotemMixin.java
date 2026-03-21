@@ -1,6 +1,6 @@
 package chowie.varietyoftotems.mixin;
 
-import chowie.varietyoftotems.VarietyOfTotems;
+import chowie.varietyoftotems.util.ModTags;
 import chowie.varietyoftotems.util.SpectatorModeTimer;
 import chowie.varietyoftotems.item.ModItems;
 import chowie.varietyoftotems.mixinaccess.GetPositionAccess;
@@ -56,9 +56,7 @@ public abstract class TotemMixin extends Entity {
 
 	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"), method = "tryUseTotem")
 	private boolean checkTotem(ItemStack itemStack2, Item item, Operation<Boolean> original) {
-        return itemStack2.isOf(Items.TOTEM_OF_UNDYING) || itemStack2.isOf(ModItems.GREEN_TOTEM) ||
-                itemStack2.isOf(ModItems.BLUE_TOTEM) || itemStack2.isOf(ModItems.PURPLE_TOTEM) ||
-				itemStack2.isOf(ModItems.BLACK_TOTEM) || itemStack2.isOf(ModItems.WHITE_TOTEM);
+        return itemStack2.isIn(ModTags.Items.TOTEM_ITEMS);
     }
 
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;setHealth(F)V"), method = "tryUseTotem", cancellable = true)

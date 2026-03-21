@@ -1,5 +1,6 @@
 package chowie.varietyoftotems;
 
+import chowie.varietyoftotems.datagen.ModItemTagProvider;
 import chowie.varietyoftotems.datagen.ModModelProvider;
 import chowie.varietyoftotems.datagen.ModRecipeProvider;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
@@ -12,5 +13,6 @@ public class VarietyOfTotemsDataGenerator implements DataGeneratorEntrypoint {
 
 		pack.addProvider(ModModelProvider::new);
 		pack.addProvider(ModRecipeProvider::new);
+		pack.addProvider(ModItemTagProvider::new);
 	}
 }
