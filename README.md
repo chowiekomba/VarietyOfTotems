@@ -73,7 +73,7 @@ This totem's ability is putting you in spectator mode for 5 seconds.
 
 </details>
 
-## 📜 NOTES:
+## 📄 NOTES:
 
 ### 🐻‍❄️ White Totem Limitations ⚠️
 With the white totem, if you pop it, and exit the game (fully terminate the process, not just exiting out of the world), you will be stuck in spectator mode.<br>
@@ -82,3 +82,4 @@ With server owners, the same thing applies when someone leaves while they're in 
 Probably not, as that could lead to worse issues if your game/server crashes.
 ### 🐦‍⬛ Black Totem
 Just note that the black totem's kill radius is 20x20x20 so if you're right below a cave, those entities could die as well.
+### 📜 Fabric API Is Required.
