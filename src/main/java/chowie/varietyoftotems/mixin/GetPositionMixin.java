@@ -33,7 +33,7 @@ public abstract class GetPositionMixin extends PlayerEntity implements GetPositi
     public void tick(CallbackInfo ci) {
         ServerPlayerEntity player = (ServerPlayerEntity) (Object) this;
 
-        if (!player.isDead() && !player.isSpectator() && !player.isCreative()) {
+        if (!player.isDead() && !player.isSpectator()) {
             posHistory.addFirst(new Vec3d(player.getX(), player.getY(), player.getZ()));
             if (posHistory.size() >= MAX_TICKS) {
                 posHistory.removeLast();

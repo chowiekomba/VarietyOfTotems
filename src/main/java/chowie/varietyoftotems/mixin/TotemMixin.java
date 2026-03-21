@@ -1,5 +1,6 @@
 package chowie.varietyoftotems.mixin;
 
+import chowie.varietyoftotems.VarietyOfTotems;
 import chowie.varietyoftotems.util.SpectatorModeTimer;
 import chowie.varietyoftotems.item.ModItems;
 import chowie.varietyoftotems.mixinaccess.GetPositionAccess;
@@ -46,6 +47,9 @@ public abstract class TotemMixin extends Entity {
 	@Shadow
 	public abstract boolean canEquip(ItemStack stack);
 
+	@Shadow
+	public abstract boolean teleport(double x, double y, double z, boolean particleEffects);
+
 	protected TotemMixin(EntityType<?> entityType, World world) {
 		super(entityType, world);
 	}
@@ -66,7 +70,7 @@ public abstract class TotemMixin extends Entity {
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 9000, 4), null);
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 500), null);
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.OOZING, 300), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 300), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 100), null);
 			this.getWorld().sendEntityStatus(this, EntityStatuses.USE_TOTEM_OF_UNDYING);
 
 			int radius = 1;
@@ -124,7 +128,7 @@ public abstract class TotemMixin extends Entity {
 			if (this instanceof GetPositionAccess access) {
 				Vec3d pos = access.varietyoftotems$getPosTenSecAgo();
 				if (pos != null) {
-					this.setPos(pos.getX(), pos.getY(), pos.getZ());
+					this.teleport(pos.getX(), pos.getY(), pos.getZ(), false);
 				}
 			}
 
@@ -164,6 +168,9 @@ public abstract class TotemMixin extends Entity {
 			if (this instanceof GetPositionAccess) {
 				SpectatorModeTimer.INSTANCE.setTimer((ServerPlayerEntity) (Object) this, 100);
 			}
+
+			this.getWorld().sendEntityStatus(this, EntityStatuses.USE_TOTEM_OF_UNDYING);
+			cir.setReturnValue(true);
 		}
 	}
 }
