@@ -4,7 +4,8 @@ This mod adds a variety of totems that have special abilities that are activated
 ## 🧤 Items
 
 - ### ⚡ Totem Shard
-This is the main item used to craft totems.
+This is the main item used to craft totems.<br>
+A Vex, Ravanger, Ender Dragon, and Warden now drop Totem Shards.
 <details>
 <summary>📸 Screenshots</summary>
 
@@ -70,6 +71,20 @@ This totem's ability is putting you in spectator mode for 5 seconds.
 <summary>📽️ Video</summary>
 
 ![Video](showcase/videos/white_totem.mp4)
+
+</details>
+
+## 🏗️ Crafting Recipes
+<details>
+<summary>Recipes</summary>
+
+![Picture](showcase/images/totem_to_shard.png)<br>
+![Picture](showcase/images/totem.png)<br>
+![Picture](showcase/images/black_totem.png)<br>
+![Picture](showcase/images/blue_totem.png)<br>
+![Picture](showcase/images/green_totem.png)<br>
+![Picture](showcase/images/purple_totem.png)<br>
+![Picture](showcase/images/white_totem.png)
 
 </details>
 
