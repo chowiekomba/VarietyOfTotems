@@ -5,7 +5,7 @@ This mod adds a variety of totems that have special abilities that are activated
 
 - ### ⚡ Totem Shard
 This is the main item used to craft totems.<br>
-A Vex, Ravanger, Ender Dragon, and Warden now drop Totem Shards.
+A Vex, Ravager, Ender Dragon, and Warden now drop Totem Shards.
 <details>
 <summary>📸 Screenshots</summary>
 
@@ -21,7 +21,7 @@ This totem's ability is spawning slime blocks below you in a 3x3 grid, flinging 
 <details>
 <summary>📽️ Video</summary>
 
-![Video](showcase/videos/green_totem.mp4)
+![Gif](showcase/videos/green_totem.gif)
 
 </details>
 
@@ -35,12 +35,12 @@ This totem's ability is giving you low durability diamond armor in the best poss
 The totem will check in this order if you have armor equipped in that slot.<br>
 Chestplate → Leggings → Helmet → Boots.
 
-![Video](showcase/videos/blue_totem.mp4)
+![Gif](showcase/videos/blue_totem.gif)
 
 If you don't have armor in any of these slots, it will give you armor in that slot.<br>
 Once it has given you armor, it won't give you any more armor. (If you don't have armor in your chestplate slot, it will put that armor in the slot, and won't give you anything else.)
 
-![Video](showcase/videos/blue_totem_with_chestplate.mp4)
+![Gif](showcase/videos/blue_totem_with_chestplate.gif)
 
 </details>
 
@@ -50,7 +50,7 @@ This totem's ability is teleporting you 10 seconds into the past.
 <details>
 <summary>📽️ Video</summary>
 
-![Video](showcase/videos/purple_totem.mp4)
+![Gif](showcase/videos/purple_totem.gif)
 
 </details>
 
@@ -60,7 +60,7 @@ This totem's ability is killing up to 5 hostile mobs in a 20 block radius.
 <details>
 <summary>📽️ Video</summary>
 
-![Video](showcase/videos/black_totem.mp4)
+![Gif](showcase/videos/black_totem.gif)
 
 </details>
 
@@ -70,7 +70,7 @@ This totem's ability is putting you in spectator mode for 5 seconds.
 <details>
 <summary>📽️ Video</summary>
 
-![Video](showcase/videos/white_totem.mp4)
+![Gif](showcase/videos/white_totem.gif)
 
 </details>
 
