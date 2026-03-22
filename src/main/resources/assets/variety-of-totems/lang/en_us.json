@@ -18,5 +18,7 @@
   "item.variety-of-totems.green_totem.tooltip": "Gives §aHero of the Village§r, §aLuck§r, §aNausea§r, §aOozing§r, and §aPoison§r",
   "item.variety-of-totems.green_totem.tooltip2": "Spawns §aSlime Blocks§r at Your Feet §f(3x3)§r",
 
+  "tag.item.variety-of-totems.totem_items": "Totem Items",
+
   "itemgroup.variety-of-totems.variety_of_totems": "Variety Of Totems"
 }
