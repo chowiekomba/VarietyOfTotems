@@ -1,13 +1,11 @@
 package chowie.varietyoftotems;
 
-import chowie.varietyoftotems.util.HandleLeaveAndJoin;
-import chowie.varietyoftotems.util.ModDataAttachments;
-import chowie.varietyoftotems.util.ModLootTableEvents;
-import chowie.varietyoftotems.util.SpectatorModeTimer;
+import chowie.varietyoftotems.util.*;
 import chowie.varietyoftotems.item.ModItemGroups;
 import chowie.varietyoftotems.item.ModItems;
 import net.fabricmc.api.ModInitializer;
 
+import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +13,9 @@ public class VarietyOfTotems implements ModInitializer {
 	public static final String MOD_ID = "variety-of-totems";
 
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+	public static final ModConfig CONFIG = ModConfig.createToml(
+			FabricLoader.getInstance().getConfigDir(), "", "VarietyOfTotemsConfig", ModConfig.class);
 
 	@Override
 	public void onInitialize() {

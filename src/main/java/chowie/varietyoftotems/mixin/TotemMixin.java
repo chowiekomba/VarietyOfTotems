@@ -29,6 +29,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static chowie.varietyoftotems.VarietyOfTotems.CONFIG;
+
 @Mixin(LivingEntity.class)
 public abstract class TotemMixin extends Entity {
 
@@ -64,11 +66,11 @@ public abstract class TotemMixin extends Entity {
 		if (itemStack.isOf(ModItems.GREEN_TOTEM)) {
 			this.setHealth(3.0F);
 			this.clearStatusEffects();
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.HERO_OF_THE_VILLAGE, 6000), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 9000, 4), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 500), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.OOZING, 300), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 100), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.HERO_OF_THE_VILLAGE, CONFIG.heroOfTheVillage), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.LUCK, 9000, CONFIG.luck), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, CONFIG.nausea), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.OOZING, CONFIG.oozing), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.POISON, CONFIG.poison), null);
 			this.getWorld().sendEntityStatus(this, EntityStatuses.USE_TOTEM_OF_UNDYING);
 
 			int radius = 1;
@@ -85,42 +87,66 @@ public abstract class TotemMixin extends Entity {
 		if (itemStack.isOf(ModItems.BLUE_TOTEM)) {
 			this.setHealth(3.0F);
 			this.clearStatusEffects();
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, 1000, 2), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.BAD_OMEN, 2000), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.CONDUIT_POWER, 900), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, 900, 5), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, 100, 3), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 700), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.TRIAL_OMEN, 9000), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, 400), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, CONFIG.absorption, 2), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.BAD_OMEN, CONFIG.badOmen), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.CONDUIT_POWER, CONFIG.conduitPower), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.DOLPHINS_GRACE, CONFIG.dolphinsGrace, 5), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.JUMP_BOOST, CONFIG.jumpBoost, 3), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, CONFIG.nightVision), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.TRIAL_OMEN, CONFIG.trialOmen), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, CONFIG.waterBreathing), null);
 			this.getWorld().sendEntityStatus(this, EntityStatuses.USE_TOTEM_OF_UNDYING);
 
-			if (this.canEquip(Items.DIAMOND_CHESTPLATE.getDefaultStack())) {
-				ItemStack chestPlate = new ItemStack(Items.DIAMOND_CHESTPLATE);
-				chestPlate.setDamage((int) (ArmorItem.Type.CHESTPLATE.getMaxDamage(33) * 0.99F));
-				this.equipStack(EquipmentSlot.CHEST, chestPlate);
-			} else if (this.canEquip(Items.DIAMOND_LEGGINGS.getDefaultStack())) {
-				ItemStack leggings = new ItemStack(Items.DIAMOND_LEGGINGS);
-				leggings.setDamage((int) (ArmorItem.Type.LEGGINGS.getMaxDamage(33) * 0.99F));
-				this.equipStack(EquipmentSlot.LEGS, leggings);
-			} else if (this.canEquip(Items.DIAMOND_HELMET.getDefaultStack())) {
-				ItemStack helmet = new ItemStack(Items.DIAMOND_HELMET);
-				helmet.setDamage((int) (ArmorItem.Type.HELMET.getMaxDamage(33) * 0.99F));
-				this.equipStack(EquipmentSlot.HEAD, helmet);
-			} else if (this.canEquip(Items.DIAMOND_BOOTS.getDefaultStack())) {
-				ItemStack boots = new ItemStack(Items.DIAMOND_BOOTS);
-				boots.setDamage((int) (ArmorItem.Type.HELMET.getMaxDamage(33) * 0.99F));
-				this.equipStack(EquipmentSlot.FEET, boots);
+			if (CONFIG.replaceAllEmptyArmorSlots) {
+				if (this.canEquip(Items.DIAMOND_CHESTPLATE.getDefaultStack())) {
+					ItemStack chestPlate = new ItemStack(Items.DIAMOND_CHESTPLATE);
+					chestPlate.setDamage((int) (ArmorItem.Type.CHESTPLATE.getMaxDamage(33) * 0.99F));
+					this.equipStack(EquipmentSlot.CHEST, chestPlate);
+				}
+				if (this.canEquip(Items.DIAMOND_LEGGINGS.getDefaultStack())) {
+					ItemStack leggings = new ItemStack(Items.DIAMOND_LEGGINGS);
+					leggings.setDamage((int) (ArmorItem.Type.LEGGINGS.getMaxDamage(33) * 0.99F));
+					this.equipStack(EquipmentSlot.LEGS, leggings);
+				}
+				if (this.canEquip(Items.DIAMOND_HELMET.getDefaultStack())) {
+					ItemStack helmet = new ItemStack(Items.DIAMOND_HELMET);
+					helmet.setDamage((int) (ArmorItem.Type.HELMET.getMaxDamage(33) * 0.99F));
+					this.equipStack(EquipmentSlot.HEAD, helmet);
+				}
+				if (this.canEquip(Items.DIAMOND_BOOTS.getDefaultStack())) {
+					ItemStack boots = new ItemStack(Items.DIAMOND_BOOTS);
+					boots.setDamage((int) (ArmorItem.Type.HELMET.getMaxDamage(33) * 0.99F));
+					this.equipStack(EquipmentSlot.FEET, boots);
+				}
+			} else {
+				if (this.canEquip(Items.DIAMOND_CHESTPLATE.getDefaultStack())) {
+					ItemStack chestPlate = new ItemStack(Items.DIAMOND_CHESTPLATE);
+					chestPlate.setDamage((int) (ArmorItem.Type.CHESTPLATE.getMaxDamage(33) * 0.99F));
+					this.equipStack(EquipmentSlot.CHEST, chestPlate);
+				} else if (this.canEquip(Items.DIAMOND_LEGGINGS.getDefaultStack())) {
+					ItemStack leggings = new ItemStack(Items.DIAMOND_LEGGINGS);
+					leggings.setDamage((int) (ArmorItem.Type.LEGGINGS.getMaxDamage(33) * 0.99F));
+					this.equipStack(EquipmentSlot.LEGS, leggings);
+				} else if (this.canEquip(Items.DIAMOND_HELMET.getDefaultStack())) {
+					ItemStack helmet = new ItemStack(Items.DIAMOND_HELMET);
+					helmet.setDamage((int) (ArmorItem.Type.HELMET.getMaxDamage(33) * 0.99F));
+					this.equipStack(EquipmentSlot.HEAD, helmet);
+				} else if (this.canEquip(Items.DIAMOND_BOOTS.getDefaultStack())) {
+					ItemStack boots = new ItemStack(Items.DIAMOND_BOOTS);
+					boots.setDamage((int) (ArmorItem.Type.HELMET.getMaxDamage(33) * 0.99F));
+					this.equipStack(EquipmentSlot.FEET, boots);
+				}
 			}
+
 
 			cir.setReturnValue(true);
 		}
 		if (itemStack.isOf(ModItems.PURPLE_TOTEM)) {
 			this.setHealth(3.0F);
 			this.clearStatusEffects();
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 4000, 5), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, 2000, 3), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 1000, 5), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, CONFIG.speed, 5), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, CONFIG.haste, 3), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, CONFIG.strength, 5), null);
 			this.getWorld().sendEntityStatus(this, EntityStatuses.USE_TOTEM_OF_UNDYING);
 
 			if (this instanceof GetPositionAccess access) {
@@ -135,12 +161,12 @@ public abstract class TotemMixin extends Entity {
 		if (itemStack.isOf(ModItems.BLACK_TOTEM)) {
 			this.setHealth(10.0F);
 			this.clearStatusEffects();
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, 200), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 4000), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.INFESTED, 4000), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 150), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.DARKNESS, CONFIG.darkness), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, CONFIG.glowing), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.INFESTED, CONFIG.infested), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, CONFIG.slowness), null);
 
-			for (int i = 0; i < 4; i++) {
+			for (int i = 1; i < CONFIG.amountOfHostileEntitiesToKill; i++) {
 				LivingEntity hostileEntity = this.getWorld().getClosestEntity(HostileEntity.class,
 						TargetPredicate.createAttackable().setBaseMaxDistance(20), null,
 						this.getX(), this.getY(), this.getZ(), Box.of(this.getPos(), 20, 20, 20));
@@ -158,13 +184,13 @@ public abstract class TotemMixin extends Entity {
 		if (itemStack.isOf(ModItems.WHITE_TOTEM)) {
 			this.setHealth(3.0F);
 			this.clearStatusEffects();
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, 400), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 800), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 500), null);
-			this.setStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, 400), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, CONFIG.whiteTotemGlowing), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, CONFIG.invisibility), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, CONFIG.whiteTotemStrength), null);
+			this.setStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, CONFIG.slowFalling), null);
 
 			if (this instanceof GetPositionAccess) {
-				SpectatorModeTimer.INSTANCE.setTimer((ServerPlayerEntity) (Object) this, 100);
+				SpectatorModeTimer.INSTANCE.setTimer((ServerPlayerEntity) (Object) this, CONFIG.ticksInSpectator);
 			}
 
 			this.getWorld().sendEntityStatus(this, EntityStatuses.USE_TOTEM_OF_UNDYING);

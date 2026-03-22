@@ -16,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.LinkedList;
 
+import static chowie.varietyoftotems.VarietyOfTotems.CONFIG;
+
 @Mixin(ServerPlayerEntity.class)
 public abstract class GetPositionMixin extends PlayerEntity implements GetPositionAccess {
 
@@ -27,7 +29,7 @@ public abstract class GetPositionMixin extends PlayerEntity implements GetPositi
     private final LinkedList<Vec3d> posHistory = new LinkedList<>();
 
     @Unique
-    private static final int MAX_TICKS = 200;
+    private static final int MAX_TICKS = CONFIG.ticksInThePast;
 
     @Inject(at = @At("HEAD"), method = "tick")
     public void tick(CallbackInfo ci) {

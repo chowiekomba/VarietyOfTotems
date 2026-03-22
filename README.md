@@ -92,4 +92,7 @@ This totem's ability is putting you in spectator mode for 5 seconds.
 
 ### 🐦‍⬛ Black Totem
 Just note that the black totem's kill radius is 20x20x20 so if you're right below a cave, those entities could die as well.
-### 📜 Fabric API Is Required.
+### 📜 Dependencies
+**The fabric api is required.**<br>
+McQoy is an optional dependency that allows you to edit the config via a Gui (only for the client/single player).<br>
+QoMC is another optional dependency that allows you to edit the config via commands (mainly for servers).
