@@ -1,6 +1,10 @@
 # Variety of Totems
 This mod adds a variety of totems that have special abilities that are activated on death.
 
+# NOTE FOR GITHUB:
+The releases tab isn't reliably updated by me, so please download the jar file on Modrinth.<br>
+[Modrinth Download Page](https://modrinth.com/mod/variety-of-totems)
+
 ## 🧤 Items
 
 - ### ⚡ Totem Shard
