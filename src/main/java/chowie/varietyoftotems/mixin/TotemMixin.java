@@ -149,11 +149,11 @@ public abstract class TotemMixin extends Entity {
 			if ((Object) this instanceof ServerPlayerEntity serverPlayerEntity) {
 				if (CONFIG.useTitle) {
 					serverPlayerEntity.networkHandler.sendPacket(new TitleS2CPacket(
-							Text.literal("Equipped §b" + piecesOfArmor + "§r Pieces of Diamond Armor")
+							Text.literal("Equipped §b" + piecesOfArmor + "§r Diamond Armor")
 					));
 				} else {
 					serverPlayerEntity.sendMessage(
-							Text.literal("Equipped §b" + piecesOfArmor + "§r Pieces of Diamond Armor"));
+							Text.literal("Equipped §b" + piecesOfArmor + "§r Diamond Armor"));
 				}
 			}
 
@@ -165,17 +165,22 @@ public abstract class TotemMixin extends Entity {
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, CONFIG.speed, 5), null);
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.HASTE, CONFIG.haste, 3), null);
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, CONFIG.strength, 5), null);
-			this.getWorld().sendEntityStatus(this, EntityStatuses.USE_TOTEM_OF_UNDYING);
 
 			if (this instanceof GetPositionAccess access) {
 				Vec3d pos = access.varietyoftotems$getPosTenSecAgo();
 				if (pos != null) {
 					this.teleport(pos.getX(), pos.getY(), pos.getZ(), false);
-					((ServerPlayerEntity) (Object) this).networkHandler.sendPacket(new TitleS2CPacket(Text.literal(
-									"Teleported §5" + access.varietyoftotems$getMaxTicks() + "§r in the past")));
+					if (CONFIG.useTitle) {
+						((ServerPlayerEntity) (Object) this).networkHandler.sendPacket(new TitleS2CPacket(Text.literal(
+								"Teleported §5" + access.varietyoftotems$getMaxTicks() / 20 + "§r Sec in the Past")));
+					} else {
+						((ServerPlayerEntity) (Object) this).sendMessage(Text.literal(
+								"Teleported §5" + access.varietyoftotems$getMaxTicks() / 20 + "§r Sec in the Past"), true);
+					}
 				}
 			}
 
+			this.getWorld().sendEntityStatus(this, EntityStatuses.USE_TOTEM_OF_UNDYING);
 			cir.setReturnValue(true);
 		}
 		if (itemStack.isOf(ModItems.BLACK_TOTEM)) {
