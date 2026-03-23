@@ -4,6 +4,7 @@ import chowie.varietyoftotems.VarietyOfTotems;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.world.GameMode;
 
 import java.util.HashMap;
@@ -26,9 +27,14 @@ public class SpectatorModeTimer implements ServerTickEvents.EndTick {
     @Override
     public void onEndTick(MinecraftServer minecraftServer) {
         for (ServerPlayerEntity playerEntity : Set.copyOf(playerMap.keySet())) {
-            if (playerMap.put(playerEntity, playerMap.getOrDefault(playerEntity, 0L) - 1L) instanceof Long l && l == 0L) {
-                playerEntity.changeGameMode(GameMode.SURVIVAL);
-                playerMap.remove(playerEntity);
+            if (playerMap.put(playerEntity, playerMap.getOrDefault(playerEntity, 0L) - 1L) instanceof Long l) {
+                if (l == 0L) {
+                    playerEntity.changeGameMode(GameMode.SURVIVAL);
+                    playerMap.remove(playerEntity);
+                }
+                if (l % 20 == 0) {
+                    playerEntity.sendMessage(Text.literal(l / 20 + " seconds left"), true);
+                }
             }
         }
     }
