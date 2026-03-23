@@ -52,4 +52,9 @@ public abstract class GetPositionMixin extends PlayerEntity implements GetPositi
     public Vec3d varietyoftotems$getPosTenSecAgo() {
         return posHistory.peekLast();
     }
+
+    @Override
+    public int varietyoftotems$getMaxTicks() {
+        return MAX_TICKS;
+    }
 }

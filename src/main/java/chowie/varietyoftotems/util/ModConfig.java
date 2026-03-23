@@ -6,6 +6,12 @@ import folk.sisby.kaleido.lib.quiltconfig.api.annotations.Comment;
 public class ModConfig extends WrappedConfig {
     @Comment("IMPORTANT: Everything is measured in ticks. Do seconds * 20 to convert seconds to ticks.")
 
+    @Comment("Universal Settings:")
+
+    @Comment("When false, it will display text the same way you see the 'sleeping through the night' text when sleeping.")
+    @Comment("When true, it will use the 'TitleScreen'. It will be bigger text on the center of the screen.")
+    public boolean useTitle = false;
+
     @Comment("Green Totem Settings:")
     public int heroOfTheVillage = 6000;
     public int luck = 9000;
@@ -48,7 +54,5 @@ public class ModConfig extends WrappedConfig {
     public int slowFalling = 400;
     @Comment("Determines the amount of ticks to have the player in spectator.")
     public int ticksInSpectator = 100;
-    @Comment("When false, it will display text the same way you see the 'sleeping through the night' text when sleeping.")
-    @Comment("When true, it will use the 'TitleScreen'. It will be bigger text on the center of the screen.")
-    public boolean useTitle = false;
+
 }

@@ -18,7 +18,9 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -97,26 +99,31 @@ public abstract class TotemMixin extends Entity {
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, CONFIG.waterBreathing), null);
 			this.getWorld().sendEntityStatus(this, EntityStatuses.USE_TOTEM_OF_UNDYING);
 
+			int piecesOfArmor = 0;
 			if (CONFIG.replaceAllEmptyArmorSlots) {
 				if (this.canEquip(Items.DIAMOND_CHESTPLATE.getDefaultStack())) {
 					ItemStack chestPlate = new ItemStack(Items.DIAMOND_CHESTPLATE);
 					chestPlate.setDamage((int) (ArmorItem.Type.CHESTPLATE.getMaxDamage(33) * 0.99F));
 					this.equipStack(EquipmentSlot.CHEST, chestPlate);
+					piecesOfArmor++;
 				}
 				if (this.canEquip(Items.DIAMOND_LEGGINGS.getDefaultStack())) {
 					ItemStack leggings = new ItemStack(Items.DIAMOND_LEGGINGS);
 					leggings.setDamage((int) (ArmorItem.Type.LEGGINGS.getMaxDamage(33) * 0.99F));
 					this.equipStack(EquipmentSlot.LEGS, leggings);
+					piecesOfArmor++;
 				}
 				if (this.canEquip(Items.DIAMOND_HELMET.getDefaultStack())) {
 					ItemStack helmet = new ItemStack(Items.DIAMOND_HELMET);
 					helmet.setDamage((int) (ArmorItem.Type.HELMET.getMaxDamage(33) * 0.99F));
 					this.equipStack(EquipmentSlot.HEAD, helmet);
+					piecesOfArmor++;
 				}
 				if (this.canEquip(Items.DIAMOND_BOOTS.getDefaultStack())) {
 					ItemStack boots = new ItemStack(Items.DIAMOND_BOOTS);
 					boots.setDamage((int) (ArmorItem.Type.HELMET.getMaxDamage(33) * 0.99F));
 					this.equipStack(EquipmentSlot.FEET, boots);
+					piecesOfArmor++;
 				}
 			} else {
 				if (this.canEquip(Items.DIAMOND_CHESTPLATE.getDefaultStack())) {
@@ -136,8 +143,19 @@ public abstract class TotemMixin extends Entity {
 					boots.setDamage((int) (ArmorItem.Type.HELMET.getMaxDamage(33) * 0.99F));
 					this.equipStack(EquipmentSlot.FEET, boots);
 				}
+				piecesOfArmor++;
 			}
 
+			if ((Object) this instanceof ServerPlayerEntity serverPlayerEntity) {
+				if (CONFIG.useTitle) {
+					serverPlayerEntity.networkHandler.sendPacket(new TitleS2CPacket(
+							Text.literal("Equipped §b" + piecesOfArmor + "§r Pieces of Diamond Armor")
+					));
+				} else {
+					serverPlayerEntity.sendMessage(
+							Text.literal("Equipped §b" + piecesOfArmor + "§r Pieces of Diamond Armor"));
+				}
+			}
 
 			cir.setReturnValue(true);
 		}
@@ -153,6 +171,8 @@ public abstract class TotemMixin extends Entity {
 				Vec3d pos = access.varietyoftotems$getPosTenSecAgo();
 				if (pos != null) {
 					this.teleport(pos.getX(), pos.getY(), pos.getZ(), false);
+					((ServerPlayerEntity) (Object) this).networkHandler.sendPacket(new TitleS2CPacket(Text.literal(
+									"Teleported §5" + access.varietyoftotems$getMaxTicks() + "§r in the past")));
 				}
 			}
 
@@ -166,15 +186,26 @@ public abstract class TotemMixin extends Entity {
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.INFESTED, CONFIG.infested), null);
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, CONFIG.slowness), null);
 
+			int entitiesKilled = 0;
 			for (int i = 1; i < CONFIG.amountOfHostileEntitiesToKill; i++) {
 				LivingEntity hostileEntity = this.getWorld().getClosestEntity(HostileEntity.class,
 						TargetPredicate.createAttackable().setBaseMaxDistance(20), null,
 						this.getX(), this.getY(), this.getZ(), Box.of(this.getPos(), 20, 20, 20));
 				if (hostileEntity != null) {
 					hostileEntity.kill();
+					entitiesKilled++;
 					continue;
 				}
 				break;
+			}
+
+			if (((Object) this) instanceof ServerPlayerEntity serverPlayer) {
+				if (CONFIG.useTitle) {
+					serverPlayer.networkHandler.sendPacket(
+							new TitleS2CPacket(Text.literal("§4" + entitiesKilled + "§r Entities Killed")));
+				} else {
+					serverPlayer.sendMessage(Text.literal("§4" + entitiesKilled + "§r Entities Killed"), true);
+				}
 			}
 
 			this.getWorld().sendEntityStatus(this, EntityStatuses.USE_TOTEM_OF_UNDYING);
@@ -189,7 +220,7 @@ public abstract class TotemMixin extends Entity {
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, CONFIG.whiteTotemStrength), null);
 			this.setStatusEffect(new StatusEffectInstance(StatusEffects.SLOW_FALLING, CONFIG.slowFalling), null);
 
-			if (this instanceof GetPositionAccess) {
+			if (((Object) this) instanceof ServerPlayerEntity) {
 				SpectatorModeTimer.INSTANCE.setTimer((ServerPlayerEntity) (Object) this, CONFIG.ticksInSpectator);
 			}
 
