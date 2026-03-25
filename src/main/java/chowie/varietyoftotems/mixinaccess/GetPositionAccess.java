@@ -1,10 +1,10 @@
 package chowie.varietyoftotems.mixinaccess;
 
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 
 public interface GetPositionAccess {
 
-    Vec3d varietyoftotems$getPosTenSecAgo();
+    Vec3 varietyoftotems$getPosTenSecAgo();
 
     int varietyoftotems$getMaxTicks();
 }

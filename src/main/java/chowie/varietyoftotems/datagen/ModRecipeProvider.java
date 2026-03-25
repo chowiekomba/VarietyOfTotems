@@ -3,78 +3,77 @@ package chowie.varietyoftotems.datagen;
 import chowie.varietyoftotems.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
-import net.minecraft.data.server.recipe.RecipeExporter;
-import net.minecraft.data.server.recipe.ShapedRecipeJsonBuilder;
-import net.minecraft.data.server.recipe.ShapelessRecipeJsonBuilder;
-import net.minecraft.item.Items;
-import net.minecraft.recipe.book.RecipeCategory;
-import net.minecraft.registry.RegistryWrapper;
-
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.world.item.Items;
 import java.util.concurrent.CompletableFuture;
 
 public class ModRecipeProvider extends FabricRecipeProvider {
-    public ModRecipeProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+    public ModRecipeProvider(FabricDataOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
     }
 
     @Override
-    public void generate(RecipeExporter recipeExporter) {
-        ShapelessRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.TOTEM_SHARD, 5)
-                .input(Items.TOTEM_OF_UNDYING)
-                .criterion(FabricRecipeProvider.hasItem(Items.TOTEM_OF_UNDYING), FabricRecipeProvider.conditionsFromItem(Items.TOTEM_OF_UNDYING))
-                .offerTo(recipeExporter);
+    public void buildRecipes(RecipeOutput recipeExporter) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, ModItems.TOTEM_SHARD, 5)
+                .requires(Items.TOTEM_OF_UNDYING)
+                .unlockedBy(FabricRecipeProvider.getHasName(Items.TOTEM_OF_UNDYING), FabricRecipeProvider.has(Items.TOTEM_OF_UNDYING))
+                .save(recipeExporter);
 
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, Items.TOTEM_OF_UNDYING)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.TOTEM_OF_UNDYING)
                 .pattern(" S ")
                 .pattern("SSS")
                 .pattern(" S ")
-                .input('S', ModItems.TOTEM_SHARD)
-                .criterion(FabricRecipeProvider.hasItem(ModItems.TOTEM_SHARD), FabricRecipeProvider.conditionsFromItem(ModItems.TOTEM_SHARD))
-                .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.GREEN_TOTEM)
+                .define('S', ModItems.TOTEM_SHARD)
+                .unlockedBy(FabricRecipeProvider.getHasName(ModItems.TOTEM_SHARD), FabricRecipeProvider.has(ModItems.TOTEM_SHARD))
+                .save(recipeExporter);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.GREEN_TOTEM)
                 .pattern("ESE")
                 .pattern("SSS")
                 .pattern("BSB")
-                .input('E', Items.EMERALD)
-                .input('S', ModItems.TOTEM_SHARD)
-                .input('B', Items.SLIME_BALL)
-                .criterion(FabricRecipeProvider.hasItem(ModItems.TOTEM_SHARD), FabricRecipeProvider.conditionsFromItem(ModItems.TOTEM_SHARD))
-                .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.BLUE_TOTEM)
+                .define('E', Items.EMERALD)
+                .define('S', ModItems.TOTEM_SHARD)
+                .define('B', Items.SLIME_BALL)
+                .unlockedBy(FabricRecipeProvider.getHasName(ModItems.TOTEM_SHARD), FabricRecipeProvider.has(ModItems.TOTEM_SHARD))
+                .save(recipeExporter);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BLUE_TOTEM)
                 .pattern("DSD")
                 .pattern("SSS")
                 .pattern("BSB")
-                .input('D', Items.DIAMOND)
-                .input('S', ModItems.TOTEM_SHARD)
-                .input('B', Items.BREEZE_ROD)
-                .criterion(FabricRecipeProvider.hasItem(ModItems.TOTEM_SHARD), FabricRecipeProvider.conditionsFromItem(ModItems.TOTEM_SHARD))
-                .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.BLACK_TOTEM)
+                .define('D', Items.DIAMOND)
+                .define('S', ModItems.TOTEM_SHARD)
+                .define('B', Items.BREEZE_ROD)
+                .unlockedBy(FabricRecipeProvider.getHasName(ModItems.TOTEM_SHARD), FabricRecipeProvider.has(ModItems.TOTEM_SHARD))
+                .save(recipeExporter);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BLACK_TOTEM)
                 .pattern("CSC")
                 .pattern("SSS")
                 .pattern("FSF")
-                .input('C', Items.COAL)
-                .input('S', ModItems.TOTEM_SHARD)
-                .input('F', Items.FLINT)
-                .criterion(FabricRecipeProvider.hasItem(ModItems.TOTEM_SHARD), FabricRecipeProvider.conditionsFromItem(ModItems.TOTEM_SHARD))
-                .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.WHITE_TOTEM)
+                .define('C', Items.COAL)
+                .define('S', ModItems.TOTEM_SHARD)
+                .define('F', Items.FLINT)
+                .unlockedBy(FabricRecipeProvider.getHasName(ModItems.TOTEM_SHARD), FabricRecipeProvider.has(ModItems.TOTEM_SHARD))
+                .save(recipeExporter);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.WHITE_TOTEM)
                 .pattern("USU")
                 .pattern("SSS")
                 .pattern("QSQ")
-                .input('U', Items.SUGAR)
-                .input('S', ModItems.TOTEM_SHARD)
-                .input('Q', Items.QUARTZ)
-                .criterion(FabricRecipeProvider.hasItem(ModItems.TOTEM_SHARD), FabricRecipeProvider.conditionsFromItem(ModItems.TOTEM_SHARD))
-                .offerTo(recipeExporter);
-        ShapedRecipeJsonBuilder.create(RecipeCategory.COMBAT, ModItems.PURPLE_TOTEM)
+                .define('U', Items.SUGAR)
+                .define('S', ModItems.TOTEM_SHARD)
+                .define('Q', Items.QUARTZ)
+                .unlockedBy(FabricRecipeProvider.getHasName(ModItems.TOTEM_SHARD), FabricRecipeProvider.has(ModItems.TOTEM_SHARD))
+                .save(recipeExporter);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.PURPLE_TOTEM)
                 .pattern("ESE")
                 .pattern("SSS")
                 .pattern("PSP")
-                .input('E', Items.ENDER_PEARL)
-                .input('S', ModItems.TOTEM_SHARD)
-                .input('P', Items.SPIDER_EYE)
-                .criterion(FabricRecipeProvider.hasItem(ModItems.TOTEM_SHARD), FabricRecipeProvider.conditionsFromItem(ModItems.TOTEM_SHARD))
-                .offerTo(recipeExporter);
+                .define('E', Items.ENDER_PEARL)
+                .define('S', ModItems.TOTEM_SHARD)
+                .define('P', Items.SPIDER_EYE)
+                .unlockedBy(FabricRecipeProvider.getHasName(ModItems.TOTEM_SHARD), FabricRecipeProvider.has(ModItems.TOTEM_SHARD))
+                .save(recipeExporter);
     }
 }

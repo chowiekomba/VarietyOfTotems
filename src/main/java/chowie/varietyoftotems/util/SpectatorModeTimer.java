@@ -2,13 +2,12 @@ package chowie.varietyoftotems.util;
 
 import chowie.varietyoftotems.VarietyOfTotems;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.network.packet.s2c.play.ClearTitleS2CPacket;
-import net.minecraft.network.packet.s2c.play.TitleS2CPacket;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundClearTitlesPacket;
+import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
-import net.minecraft.world.GameMode;
-
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.GameType;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -17,35 +16,35 @@ import static chowie.varietyoftotems.VarietyOfTotems.CONFIG;
 
 public class SpectatorModeTimer implements ServerTickEvents.EndTick {
     public static SpectatorModeTimer INSTANCE = new SpectatorModeTimer();
-    private final Map<ServerPlayerEntity, Long> playerMap = new HashMap<>();
+    private final Map<ServerPlayer, Long> playerMap = new HashMap<>();
 
-    public Map<ServerPlayerEntity, Long> getPlayerMap() {
+    public Map<ServerPlayer, Long> getPlayerMap() {
         return playerMap;
     }
 
-    public void setTimer(ServerPlayerEntity player, long ticksUntilSurvivalMode) {
+    public void setTimer(ServerPlayer player, long ticksUntilSurvivalMode) {
         playerMap.put(player, ticksUntilSurvivalMode);
-        player.changeGameMode(GameMode.SPECTATOR);
+        player.setGameMode(GameType.SPECTATOR);
     }
 
     @Override
     public void onEndTick(MinecraftServer minecraftServer) {
-        for (ServerPlayerEntity playerEntity : Set.copyOf(playerMap.keySet())) {
+        for (ServerPlayer playerEntity : Set.copyOf(playerMap.keySet())) {
             if (playerMap.put(playerEntity, playerMap.getOrDefault(playerEntity, 0L) - 1L) instanceof Long l) {
                 if (l % 20 == 0) {
                     if (CONFIG.useTitle) {
-                        playerEntity.networkHandler.sendPacket(new TitleS2CPacket(Text.literal(l / 20 + " Seconds Left")));
+                        playerEntity.connection.send(new ClientboundSetTitleTextPacket(Component.literal(l / 20 + " Seconds Left")));
                     } else {
-                        playerEntity.sendMessage(Text.literal(l / 20 + " Seconds Left"), true);
+                        playerEntity.displayClientMessage(Component.literal(l / 20 + " Seconds Left"), true);
                     }
                 }
                 if (l == 0L) {
                     if (CONFIG.useTitle) {
-                        playerEntity.networkHandler.sendPacket(new ClearTitleS2CPacket(true));
+                        playerEntity.connection.send(new ClientboundClearTitlesPacket(true));
                     } else {
-                        playerEntity.sendMessage(Text.literal(""));
+                        playerEntity.sendSystemMessage(Component.literal(""), true);
                     }
-                    playerEntity.changeGameMode(GameMode.SURVIVAL);
+                    playerEntity.setGameMode(GameType.SURVIVAL);
                     playerMap.remove(playerEntity);
                 }
 
