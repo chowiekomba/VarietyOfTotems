@@ -8,7 +8,7 @@ public class ModConfig extends WrappedConfig {
 
     @Comment("Universal Settings:")
 
-    @Comment("When false, it will display text the same way you see the 'sleeping through the night' text when sleeping. (Also known as the 'Action Bar')")
+    @Comment("When false, it will display text the same way you see the 'sleeping through the night' text when sleeping. (Also known as the 'Action Bar'.)")
     @Comment("When true, it will use the 'TitleScreen'. It will be bigger text on the center of the screen.")
     public boolean useTitle = false;
 
