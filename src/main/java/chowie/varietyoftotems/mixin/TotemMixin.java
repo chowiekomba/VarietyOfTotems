@@ -7,12 +7,15 @@ import chowie.varietyoftotems.mixinaccess.GetPositionAccess;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EntityType;
@@ -34,6 +37,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Map;
+import java.util.Optional;
 
 import static chowie.varietyoftotems.VarietyOfTotems.CONFIG;
 
@@ -72,11 +78,12 @@ public abstract class TotemMixin extends Entity {
 		if (itemStack.is(ModItems.GREEN_TOTEM)) {
 			this.setHealth(3.0F);
 			this.removeAllEffects();
-			this.forceAddEffect(new MobEffectInstance(MobEffects.HERO_OF_THE_VILLAGE, CONFIG.heroOfTheVillage), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.LUCK, 9000, CONFIG.luck), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.CONFUSION, CONFIG.nausea), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.OOZING, CONFIG.oozing), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.POISON, CONFIG.poison), null);
+
+			for (Map.Entry<String, Integer> effectSet : CONFIG.greenTotemMap.entrySet()) {
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(effectSet.getKey()));
+                effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
+			}
+
 			this.level().broadcastEntityEvent(this, EntityEvent.TALISMAN_ACTIVATE);
 
 			int radius = 1;
@@ -93,14 +100,10 @@ public abstract class TotemMixin extends Entity {
 		if (itemStack.is(ModItems.BLUE_TOTEM)) {
 			this.setHealth(3.0F);
 			this.removeAllEffects();
-			this.forceAddEffect(new MobEffectInstance(MobEffects.ABSORPTION, CONFIG.absorption, 2), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.BAD_OMEN, CONFIG.badOmen), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.CONDUIT_POWER, CONFIG.conduitPower), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.DOLPHINS_GRACE, CONFIG.dolphinsGrace, 5), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.JUMP, CONFIG.jumpBoost, 3), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, CONFIG.nightVision), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.TRIAL_OMEN, CONFIG.trialOmen), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, CONFIG.waterBreathing), null);
+			for (Map.Entry<String, Integer> effectSet : CONFIG.blueTotemMap.entrySet()) {
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(effectSet.getKey()));
+				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
+			}
 			this.level().broadcastEntityEvent(this, EntityEvent.TALISMAN_ACTIVATE);
 
 			int piecesOfArmor = 0;
@@ -166,10 +169,10 @@ public abstract class TotemMixin extends Entity {
 		if (itemStack.is(ModItems.PURPLE_TOTEM)) {
 			this.setHealth(3.0F);
 			this.removeAllEffects();
-			this.forceAddEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, CONFIG.speed, 5), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.DIG_SPEED, CONFIG.haste, 3), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, CONFIG.strength, 5), null);
-
+			for (Map.Entry<String, Integer> effectSet : CONFIG.purpleTotemMap.entrySet()) {
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(effectSet.getKey()));
+				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
+			}
 			if (this instanceof GetPositionAccess access) {
 				Vec3 pos = access.varietyoftotems$getPosTenSecAgo();
 				if (pos != null) {
@@ -190,11 +193,10 @@ public abstract class TotemMixin extends Entity {
 		if (itemStack.is(ModItems.BLACK_TOTEM)) {
 			this.setHealth(10.0F);
 			this.removeAllEffects();
-			this.forceAddEffect(new MobEffectInstance(MobEffects.DARKNESS, CONFIG.darkness), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.GLOWING, CONFIG.glowing), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.INFESTED, CONFIG.infested), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, CONFIG.slowness), null);
-
+			for (Map.Entry<String, Integer> effectSet : CONFIG.blackTotemMap.entrySet()) {
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(effectSet.getKey()));
+				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
+			}
 			int entitiesKilled = 0;
 			for (int i = 1; i < CONFIG.amountOfHostileEntitiesToKill; i++) {
 				LivingEntity hostileEntity = this.level().getNearestEntity(Monster.class,
@@ -224,11 +226,10 @@ public abstract class TotemMixin extends Entity {
 		if (itemStack.is(ModItems.WHITE_TOTEM)) {
 			this.setHealth(3.0F);
 			this.removeAllEffects();
-			this.forceAddEffect(new MobEffectInstance(MobEffects.GLOWING, CONFIG.whiteTotemGlowing), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.INVISIBILITY, CONFIG.invisibility), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, CONFIG.whiteTotemStrength), null);
-			this.forceAddEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, CONFIG.slowFalling), null);
-
+			for (Map.Entry<String, Integer> effectSet : CONFIG.whiteTotemMap.entrySet()) {
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(effectSet.getKey()));
+				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
+			}
 			if (((Object) this) instanceof ServerPlayer) {
 				SpectatorModeTimer.INSTANCE.setTimer((ServerPlayer) (Object) this, CONFIG.ticksInSpectator);
 			}

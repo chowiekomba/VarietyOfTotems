@@ -19,6 +19,8 @@ A Vex, Ravager, Ender Dragon, and Warden now drop Totem Shards.
 
 </details>
 
+# As of version 1.3.0, all effects and effect lengths are configurable.
+
 - ### 🌳 Green Totem
 This totem gives Hero of the Village for 5 minutes, Luck for 7.5 minutes, Nausea for 25 seconds, Oozing for 15 seconds, and Poison for 5 seconds.<br>
 This totem's ability is spawning slime blocks below you in a 3x3 grid, flinging you in the air.
