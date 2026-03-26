@@ -32,10 +32,11 @@ public class SpectatorModeTimer implements ServerTickEvents.EndTick {
         for (ServerPlayer playerEntity : Set.copyOf(playerMap.keySet())) {
             if (playerMap.put(playerEntity, playerMap.getOrDefault(playerEntity, 0L) - 1L) instanceof Long l) {
                 if (l % 20 == 0) {
+                    String text = l / 20 + " Seconds Left";
                     if (CONFIG.useTitle) {
-                        playerEntity.connection.send(new ClientboundSetTitleTextPacket(Component.literal(l / 20 + " Seconds Left")));
+                        playerEntity.connection.send(new ClientboundSetTitleTextPacket(Component.literal(text)));
                     } else {
-                        playerEntity.displayClientMessage(Component.literal(l / 20 + " Seconds Left"), true);
+                        playerEntity.displayClientMessage(Component.literal(text), true);
                     }
                 }
                 if (l == 0L) {

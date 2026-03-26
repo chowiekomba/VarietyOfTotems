@@ -154,13 +154,14 @@ public abstract class TotemMixin extends Entity {
 			}
 
 			if ((Object) this instanceof ServerPlayer serverPlayerEntity) {
+				String text = "Equipped §b" + piecesOfArmor + "§r Diamond Armor";
 				if (CONFIG.useTitle) {
 					serverPlayerEntity.connection.send(new ClientboundSetTitleTextPacket(
-							Component.literal("Equipped §b" + piecesOfArmor + "§r Diamond Armor")
+							Component.literal(text)
 					));
 				} else {
 					serverPlayerEntity.sendSystemMessage(
-							Component.literal("Equipped §b" + piecesOfArmor + "§r Diamond Armor"));
+							Component.literal(text));
 				}
 			}
 
@@ -176,13 +177,14 @@ public abstract class TotemMixin extends Entity {
 			if (this instanceof GetPositionAccess access) {
 				Vec3 pos = access.varietyoftotems$getPosTenSecAgo();
 				if (pos != null) {
+					String text = "Teleported §5" + access.varietyoftotems$getMaxTicks() / 20 + "§r Sec in the Past";
 					this.randomTeleport(pos.x(), pos.y(), pos.z(), false);
 					if (CONFIG.useTitle) {
 						((ServerPlayer) (Object) this).connection.send(new ClientboundSetTitleTextPacket(Component.literal(
-								"Teleported §5" + access.varietyoftotems$getMaxTicks() / 20 + "§r Sec in the Past")));
+								text)));
 					} else {
 						((ServerPlayer) (Object) this).displayClientMessage(Component.literal(
-								"Teleported §5" + access.varietyoftotems$getMaxTicks() / 20 + "§r Sec in the Past"), true);
+								text), true);
 					}
 				}
 			}
@@ -211,11 +213,12 @@ public abstract class TotemMixin extends Entity {
 			}
 
 			if (((Object) this) instanceof ServerPlayer serverPlayer) {
+				String text = "§4" + entitiesKilled + "§r Entities Killed";
 				if (CONFIG.useTitle) {
 					serverPlayer.connection.send(
-							new ClientboundSetTitleTextPacket(Component.literal("§4" + entitiesKilled + "§r Entities Killed")));
+							new ClientboundSetTitleTextPacket(Component.literal(text)));
 				} else {
-					serverPlayer.displayClientMessage(Component.literal("§4" + entitiesKilled + "§r Entities Killed"), true);
+					serverPlayer.displayClientMessage(Component.literal(text), true);
 				}
 			}
 
