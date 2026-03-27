@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "E": {
-      "item": "minecraft:ender_pearl"
-    },
-    "P": {
-      "item": "minecraft:spider_eye"
-    },
-    "S": {
-      "item": "variety-of-totems:totem_shard"
-    }
+    "E": "minecraft:ender_pearl",
+    "P": "minecraft:spider_eye",
+    "S": "variety-of-totems:totem_shard"
   },
   "pattern": [
     "ESE",

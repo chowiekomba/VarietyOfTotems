@@ -1,7 +1,6 @@
 package chowie.varietyoftotems.util;
 
 import chowie.varietyoftotems.VarietyOfTotems;
-import com.mojang.serialization.Codec;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.resources.ResourceLocation;
@@ -10,9 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 public class ModDataAttachments {
 
     public static final AttachmentType<Long> PLAYERS_TO_DESPECTATE_ATTACHMENT = AttachmentRegistry.create(
-            ResourceLocation.fromNamespaceAndPath(VarietyOfTotems.MOD_ID, "players_to_despectate_attachment"),
-            builder -> builder
-                    .persistent(Codec.LONG)
+            ResourceLocation.fromNamespaceAndPath(VarietyOfTotems.MOD_ID, "players_to_despectate_attachment")
     );
 
     public static void register() {

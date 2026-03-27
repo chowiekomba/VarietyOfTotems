@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "B": {
-      "item": "minecraft:breeze_rod"
-    },
-    "D": {
-      "item": "minecraft:diamond"
-    },
-    "S": {
-      "item": "variety-of-totems:totem_shard"
-    }
+    "B": "minecraft:breeze_rod",
+    "D": "minecraft:diamond",
+    "S": "variety-of-totems:totem_shard"
   },
   "pattern": [
     "DSD",

@@ -1,32 +1,25 @@
 package chowie.varietyoftotems.mixin;
 
-import chowie.varietyoftotems.util.ModTags;
 import chowie.varietyoftotems.util.SpectatorModeTimer;
 import chowie.varietyoftotems.item.ModItems;
 import chowie.varietyoftotems.mixinaccess.GetPositionAccess;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityEvent;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.DeathProtection;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
@@ -38,6 +31,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -58,33 +52,27 @@ public abstract class TotemMixin extends Entity {
 	@Shadow
 	public abstract void setItemSlot(EquipmentSlot slot, ItemStack stack);
 
-	@Shadow
-	public abstract boolean canTakeItem(ItemStack stack);
 
 	@Shadow
 	public abstract boolean randomTeleport(double x, double y, double z, boolean particleEffects);
+
+	@Shadow
+	public abstract boolean hasItemInSlot(EquipmentSlot slot);
 
 	protected TotemMixin(EntityType<?> entityType, Level world) {
 		super(entityType, world);
 	}
 
-	@WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"), method = "checkTotemDeathProtection")
-	private boolean checkTotem(ItemStack itemStack2, Item item, Operation<Boolean> original) {
-        return itemStack2.is(ModTags.Items.TOTEM_ITEMS);
-    }
-
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V"), method = "checkTotemDeathProtection", cancellable = true)
-	private void useTotemEffects(DamageSource source, CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 0) ItemStack itemStack) {
+	private void useTotemEffects(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 0) ItemStack itemStack) {
 		if (itemStack.is(ModItems.GREEN_TOTEM)) {
 			this.setHealth(3.0F);
 			this.removeAllEffects();
 
 			for (Map.Entry<String, Integer> effectSet : CONFIG.greenTotemMap.entrySet()) {
-				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(effectSet.getKey()));
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse(effectSet.getKey()));
                 effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
 			}
-
-			this.level().broadcastEntityEvent(this, EntityEvent.TALISMAN_ACTIVATE);
 
 			int radius = 1;
 			for (int x = -radius; x <= radius; x++) {
@@ -95,75 +83,77 @@ public abstract class TotemMixin extends Entity {
 
 			this.push(new Vec3(0, -3, 0));
 
+			this.level().broadcastEntityEvent(this, (byte) 35);
 			cir.setReturnValue(true);
 		}
 		if (itemStack.is(ModItems.BLUE_TOTEM)) {
 			this.setHealth(3.0F);
 			this.removeAllEffects();
 			for (Map.Entry<String, Integer> effectSet : CONFIG.blueTotemMap.entrySet()) {
-				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(effectSet.getKey()));
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse(effectSet.getKey()));
 				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
 			}
-			this.level().broadcastEntityEvent(this, EntityEvent.TALISMAN_ACTIVATE);
 
 			int piecesOfArmor = 0;
 			if (CONFIG.replaceAllEmptyArmorSlots) {
-				if (this.canTakeItem(Items.DIAMOND_CHESTPLATE.getDefaultInstance())) {
+				if (!this.hasItemInSlot(EquipmentSlot.CHEST)) {
 					ItemStack chestPlate = new ItemStack(Items.DIAMOND_CHESTPLATE);
-					chestPlate.setDamageValue((int) (ArmorItem.Type.CHESTPLATE.getDurability(33) * 0.99F));
+					chestPlate.setDamageValue((int) (chestPlate.getMaxDamage() * 0.99F));
 					this.setItemSlot(EquipmentSlot.CHEST, chestPlate);
 					piecesOfArmor++;
 				}
-				if (this.canTakeItem(Items.DIAMOND_LEGGINGS.getDefaultInstance())) {
+				if (!this.hasItemInSlot(EquipmentSlot.LEGS)) {
 					ItemStack leggings = new ItemStack(Items.DIAMOND_LEGGINGS);
-					leggings.setDamageValue((int) (ArmorItem.Type.LEGGINGS.getDurability(33) * 0.99F));
+					leggings.setDamageValue((int) (leggings.getMaxDamage() * 0.99F));
 					this.setItemSlot(EquipmentSlot.LEGS, leggings);
 					piecesOfArmor++;
 				}
-				if (this.canTakeItem(Items.DIAMOND_HELMET.getDefaultInstance())) {
+				if (!this.hasItemInSlot(EquipmentSlot.HEAD)) {
 					ItemStack helmet = new ItemStack(Items.DIAMOND_HELMET);
-					helmet.setDamageValue((int) (ArmorItem.Type.HELMET.getDurability(33) * 0.99F));
+					helmet.setDamageValue((int) (helmet.getMaxDamage() * 0.99F));
 					this.setItemSlot(EquipmentSlot.HEAD, helmet);
 					piecesOfArmor++;
 				}
-				if (this.canTakeItem(Items.DIAMOND_BOOTS.getDefaultInstance())) {
+				if (!this.hasItemInSlot(EquipmentSlot.FEET)) {
 					ItemStack boots = new ItemStack(Items.DIAMOND_BOOTS);
-					boots.setDamageValue((int) (ArmorItem.Type.HELMET.getDurability(33) * 0.99F));
+					boots.setDamageValue((int) (boots.getMaxDamage() * 0.99F));
 					this.setItemSlot(EquipmentSlot.FEET, boots);
 					piecesOfArmor++;
 				}
 			} else {
-				if (this.canTakeItem(Items.DIAMOND_CHESTPLATE.getDefaultInstance())) {
+				if (!this.hasItemInSlot(EquipmentSlot.CHEST)) {
 					ItemStack chestPlate = new ItemStack(Items.DIAMOND_CHESTPLATE);
-					chestPlate.setDamageValue((int) (ArmorItem.Type.CHESTPLATE.getDurability(33) * 0.99F));
+					chestPlate.setDamageValue((int) (chestPlate.getMaxDamage() * 0.99F));
 					this.setItemSlot(EquipmentSlot.CHEST, chestPlate);
-				} else if (this.canTakeItem(Items.DIAMOND_LEGGINGS.getDefaultInstance())) {
+				} else if (!this.hasItemInSlot(EquipmentSlot.LEGS)) {
 					ItemStack leggings = new ItemStack(Items.DIAMOND_LEGGINGS);
-					leggings.setDamageValue((int) (ArmorItem.Type.LEGGINGS.getDurability(33) * 0.99F));
+					leggings.setDamageValue((int) (leggings.getMaxDamage() * 0.99F));
 					this.setItemSlot(EquipmentSlot.LEGS, leggings);
-				} else if (this.canTakeItem(Items.DIAMOND_HELMET.getDefaultInstance())) {
+				} else if (!this.hasItemInSlot(EquipmentSlot.HEAD)) {
 					ItemStack helmet = new ItemStack(Items.DIAMOND_HELMET);
-					helmet.setDamageValue((int) (ArmorItem.Type.HELMET.getDurability(33) * 0.99F));
+					helmet.setDamageValue((int) (helmet.getMaxDamage() * 0.99F));
 					this.setItemSlot(EquipmentSlot.HEAD, helmet);
-				} else if (this.canTakeItem(Items.DIAMOND_BOOTS.getDefaultInstance())) {
+				} else if (!this.hasItemInSlot(EquipmentSlot.FEET)) {
 					ItemStack boots = new ItemStack(Items.DIAMOND_BOOTS);
-					boots.setDamageValue((int) (ArmorItem.Type.HELMET.getDurability(33) * 0.99F));
+					boots.setDamageValue((int) (boots.getMaxDamage() * 0.99F));
 					this.setItemSlot(EquipmentSlot.FEET, boots);
 				}
 				piecesOfArmor++;
 			}
 
-			if ((Object) this instanceof ServerPlayer serverPlayerEntity) {
+			if ((Object) this instanceof ServerPlayer serverPlayer) {
 				String text = "Equipped §b" + piecesOfArmor + "§r Diamond Armor";
 				if (CONFIG.useTitle) {
-					serverPlayerEntity.connection.send(new ClientboundSetTitleTextPacket(
+					serverPlayer.connection.send(new ClientboundSetTitleTextPacket(
 							Component.literal(text)
 					));
 				} else {
-					serverPlayerEntity.sendSystemMessage(
+					serverPlayer.sendSystemMessage(
 							Component.literal(text));
 				}
 			}
+
+			this.level().broadcastEntityEvent(this, (byte) 35);
 
 			cir.setReturnValue(true);
 		}
@@ -171,7 +161,7 @@ public abstract class TotemMixin extends Entity {
 			this.setHealth(3.0F);
 			this.removeAllEffects();
 			for (Map.Entry<String, Integer> effectSet : CONFIG.purpleTotemMap.entrySet()) {
-				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(effectSet.getKey()));
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse(effectSet.getKey()));
 				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
 			}
 			if (this instanceof GetPositionAccess access) {
@@ -189,27 +179,27 @@ public abstract class TotemMixin extends Entity {
 				}
 			}
 
-			this.level().broadcastEntityEvent(this, EntityEvent.TALISMAN_ACTIVATE);
+			this.level().broadcastEntityEvent(this, (byte) 35);
+
 			cir.setReturnValue(true);
 		}
 		if (itemStack.is(ModItems.BLACK_TOTEM)) {
 			this.setHealth(10.0F);
 			this.removeAllEffects();
 			for (Map.Entry<String, Integer> effectSet : CONFIG.blackTotemMap.entrySet()) {
-				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(effectSet.getKey()));
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse(effectSet.getKey()));
 				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
 			}
 			int entitiesKilled = 0;
-			for (int i = 1; i < CONFIG.amountOfHostileEntitiesToKill; i++) {
-				LivingEntity hostileEntity = this.level().getNearestEntity(Monster.class,
-						TargetingConditions.forCombat().range(20), null,
-						this.getX(), this.getY(), this.getZ(), AABB.ofSize(this.position(), 20, 20, 20));
-				if (hostileEntity != null) {
-					hostileEntity.kill();
+			List<Entity> entityList = this.level().getEntities(null,
+					AABB.ofSize(this.position(), 20, 20, 20));
+
+			for (int i = 0; i < entityList.size() && i < CONFIG.amountOfHostileEntitiesToKill - 1; i++) {
+				if (entityList.getFirst() instanceof Monster entityToKill) {
+					entityToKill.kill((ServerLevel) this.level());
 					entitiesKilled++;
-					continue;
+					entityList.removeFirst();
 				}
-				break;
 			}
 
 			if (((Object) this) instanceof ServerPlayer serverPlayer) {
@@ -222,7 +212,7 @@ public abstract class TotemMixin extends Entity {
 				}
 			}
 
-			this.level().broadcastEntityEvent(this, EntityEvent.TALISMAN_ACTIVATE);
+			this.level().broadcastEntityEvent(this, (byte) 35);
 
 			cir.setReturnValue(true);
 		}
@@ -230,14 +220,14 @@ public abstract class TotemMixin extends Entity {
 			this.setHealth(3.0F);
 			this.removeAllEffects();
 			for (Map.Entry<String, Integer> effectSet : CONFIG.whiteTotemMap.entrySet()) {
-				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.getHolder(ResourceLocation.parse(effectSet.getKey()));
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse(effectSet.getKey()));
 				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
 			}
-			if (((Object) this) instanceof ServerPlayer) {
-				SpectatorModeTimer.INSTANCE.setTimer((ServerPlayer) (Object) this, CONFIG.ticksInSpectator);
+			if (((Object) this) instanceof ServerPlayer serverPlayer) {
+				SpectatorModeTimer.INSTANCE.setTimer(serverPlayer, CONFIG.ticksInSpectator);
 			}
 
-			this.level().broadcastEntityEvent(this, EntityEvent.TALISMAN_ACTIVATE);
+			this.level().broadcastEntityEvent(this, (byte) 35);
 			cir.setReturnValue(true);
 		}
 	}

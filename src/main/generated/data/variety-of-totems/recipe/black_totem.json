@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "C": {
-      "item": "minecraft:coal"
-    },
-    "F": {
-      "item": "minecraft:flint"
-    },
-    "S": {
-      "item": "variety-of-totems:totem_shard"
-    }
+    "C": "minecraft:coal",
+    "F": "minecraft:flint",
+    "S": "variety-of-totems:totem_shard"
   },
   "pattern": [
     "CSC",
