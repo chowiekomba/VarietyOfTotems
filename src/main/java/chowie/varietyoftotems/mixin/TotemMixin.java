@@ -62,7 +62,7 @@ public abstract class TotemMixin extends Entity {
 	}
 
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;setHealth(F)V"), method = "checkTotemDeathProtection", cancellable = true)
-	private void useTotemEffects(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 0) ItemStack itemStack) {
+	private void useTotemEffects(DamageSource damageSource, CallbackInfoReturnable<Boolean> cir, @Local(name = "protectionItem") ItemStack itemStack) {
 		if (itemStack.is(ModItems.GREEN_TOTEM)) {
 			this.setHealth(3.0F);
 			this.removeAllEffects();
@@ -171,8 +171,7 @@ public abstract class TotemMixin extends Entity {
 						((ServerPlayer) (Object) this).connection.send(new ClientboundSetTitleTextPacket(Component.literal(
 								text)));
 					} else {
-						((ServerPlayer) (Object) this).displayClientMessage(Component.literal(
-								text), true);
+						((ServerPlayer) (Object) this).sendSystemMessage(Component.literal(text), true);
 					}
 				}
 			}
@@ -206,7 +205,7 @@ public abstract class TotemMixin extends Entity {
 					serverPlayer.connection.send(
 							new ClientboundSetTitleTextPacket(Component.literal(text)));
 				} else {
-					serverPlayer.displayClientMessage(Component.literal(text), true);
+					serverPlayer.sendSystemMessage(Component.literal(text), true);
 				}
 			}
 

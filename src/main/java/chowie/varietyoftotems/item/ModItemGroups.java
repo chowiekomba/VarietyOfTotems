@@ -1,7 +1,7 @@
 package chowie.varietyoftotems.item;
 
 import chowie.varietyoftotems.VarietyOfTotems;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -13,7 +13,7 @@ public class ModItemGroups {
 
     public static final CreativeModeTab VARIETY_OF_TOTEMS_GROUP = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
             Identifier.fromNamespaceAndPath(VarietyOfTotems.MOD_ID, "variety_of_totems_items"),
-            FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.GREEN_TOTEM))
+            FabricCreativeModeTab.builder().icon(() -> new ItemStack(ModItems.GREEN_TOTEM))
                     .title(Component.translatable("itemgroup.variety-of-totems.variety_of_totems"))
                     .displayItems((displayContext, entries) -> {
                         entries.accept(ModItems.GREEN_TOTEM);

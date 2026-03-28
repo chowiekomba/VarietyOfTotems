@@ -38,7 +38,7 @@ public class SpectatorModeTimer implements ServerTickEvents.EndTick {
                     if (CONFIG.useTitle) {
                         playerEntity.connection.send(new ClientboundSetTitleTextPacket(Component.literal(text)));
                     } else {
-                        playerEntity.displayClientMessage(Component.literal(text), true);
+                        playerEntity.sendSystemMessage(Component.literal(text), true);
                     }
                 }
                 if (l == 0L) {
