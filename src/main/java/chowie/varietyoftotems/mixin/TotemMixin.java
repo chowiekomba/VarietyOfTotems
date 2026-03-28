@@ -8,7 +8,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -68,7 +68,7 @@ public abstract class TotemMixin extends Entity {
 			this.removeAllEffects();
 
 			for (Map.Entry<String, Integer> effectSet : CONFIG.greenTotemMap.entrySet()) {
-				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse(effectSet.getKey()));
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(Identifier.parse(effectSet.getKey()));
                 effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
 			}
 
@@ -88,7 +88,7 @@ public abstract class TotemMixin extends Entity {
 			this.setHealth(3.0F);
 			this.removeAllEffects();
 			for (Map.Entry<String, Integer> effectSet : CONFIG.blueTotemMap.entrySet()) {
-				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse(effectSet.getKey()));
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(Identifier.parse(effectSet.getKey()));
 				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
 			}
 
@@ -159,7 +159,7 @@ public abstract class TotemMixin extends Entity {
 			this.setHealth(3.0F);
 			this.removeAllEffects();
 			for (Map.Entry<String, Integer> effectSet : CONFIG.purpleTotemMap.entrySet()) {
-				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse(effectSet.getKey()));
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(Identifier.parse(effectSet.getKey()));
 				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
 			}
 			if (this instanceof GetPositionAccess access) {
@@ -185,7 +185,7 @@ public abstract class TotemMixin extends Entity {
 			this.setHealth(10.0F);
 			this.removeAllEffects();
 			for (Map.Entry<String, Integer> effectSet : CONFIG.blackTotemMap.entrySet()) {
-				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse(effectSet.getKey()));
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(Identifier.parse(effectSet.getKey()));
 				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
 			}
 			int entitiesKilled = 0;
@@ -218,7 +218,7 @@ public abstract class TotemMixin extends Entity {
 			this.setHealth(3.0F);
 			this.removeAllEffects();
 			for (Map.Entry<String, Integer> effectSet : CONFIG.whiteTotemMap.entrySet()) {
-				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse(effectSet.getKey()));
+				Optional<Holder.Reference<MobEffect>> effect = BuiltInRegistries.MOB_EFFECT.get(Identifier.parse(effectSet.getKey()));
 				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
 			}
 			if (((Object) this) instanceof ServerPlayer serverPlayer) {

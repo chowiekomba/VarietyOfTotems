@@ -1,7 +1,13 @@
-// 1.21.2	2026-03-27T11:09:23.588006	variety of totems/Model Definitions
-b964bebdca4e302903b6c84e0f25caab00f474ee assets\variety-of-totems\models\item\purple_totem.json
-4f594ab055f4e82db750c2d76481d8e4c71295b2 assets\variety-of-totems\models\item\green_totem.json
-d4c8fe6de023c3642ee359190db649ce21f68ceb assets\variety-of-totems\models\item\black_totem.json
-81080833d6cca16ea3b8df5b42655e1632fa8616 assets\variety-of-totems\models\item\totem_shard.json
-c8f9482117387ddbd677b48096bb08c9600d84b9 assets\variety-of-totems\models\item\blue_totem.json
-0aacf6eef7def005336d3d79ae8e320f31bdef2a assets\variety-of-totems\models\item\white_totem.json
+// 1.21.11	-999999999-01-01T00:00:00	variety of totems/Model Definitions
+945d21b56cde3523bf8d5908e98c378c8c5f5d37 assets/variety-of-totems/items/black_totem.json
+8ed4ad2f5560cacb695fa668a041392e6d2d4e73 assets/variety-of-totems/items/blue_totem.json
+dcbe4bd4550ffc7b29221ac2d3784fcb7ec02649 assets/variety-of-totems/items/green_totem.json
+01a7c07a167adab876efbf5742b4cae1a28cd397 assets/variety-of-totems/items/purple_totem.json
+774a893b5547119a70097f227c7034f36f698139 assets/variety-of-totems/items/totem_shard.json
+6b8032c2e0256637656cfdb87bf7d9d314657a63 assets/variety-of-totems/items/white_totem.json
+d4c8fe6de023c3642ee359190db649ce21f68ceb assets/variety-of-totems/models/item/black_totem.json
+c8f9482117387ddbd677b48096bb08c9600d84b9 assets/variety-of-totems/models/item/blue_totem.json
+4f594ab055f4e82db750c2d76481d8e4c71295b2 assets/variety-of-totems/models/item/green_totem.json
+b964bebdca4e302903b6c84e0f25caab00f474ee assets/variety-of-totems/models/item/purple_totem.json
+81080833d6cca16ea3b8df5b42655e1632fa8616 assets/variety-of-totems/models/item/totem_shard.json
+0aacf6eef7def005336d3d79ae8e320f31bdef2a assets/variety-of-totems/models/item/white_totem.json

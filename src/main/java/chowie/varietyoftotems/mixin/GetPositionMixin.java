@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.LinkedList;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -21,8 +20,8 @@ import static chowie.varietyoftotems.VarietyOfTotems.CONFIG;
 @Mixin(ServerPlayer.class)
 public abstract class GetPositionMixin extends Player implements GetPositionAccess {
 
-    public GetPositionMixin(Level world, BlockPos pos, float yaw, GameProfile gameProfile) {
-        super(world, pos, yaw, gameProfile);
+    public GetPositionMixin(Level world, GameProfile gameProfile) {
+        super(world, gameProfile);
     }
 
     @Unique

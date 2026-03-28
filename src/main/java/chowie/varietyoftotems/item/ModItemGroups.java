@@ -5,14 +5,14 @@ import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 public class ModItemGroups {
 
     public static final CreativeModeTab VARIETY_OF_TOTEMS_GROUP = Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
-            ResourceLocation.fromNamespaceAndPath(VarietyOfTotems.MOD_ID, "variety_of_totems_items"),
+            Identifier.fromNamespaceAndPath(VarietyOfTotems.MOD_ID, "variety_of_totems_items"),
             FabricItemGroup.builder().icon(() -> new ItemStack(ModItems.GREEN_TOTEM))
                     .title(Component.translatable("itemgroup.variety-of-totems.variety_of_totems"))
                     .displayItems((displayContext, entries) -> {

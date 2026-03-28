@@ -3,7 +3,7 @@
   "criteria": {
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:totem_of_undying"
+        "recipe": "variety-of-totems:totem_of_undying"
       },
       "trigger": "minecraft:recipe_unlocked"
     },
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:totem_of_undying"
+      "variety-of-totems:totem_of_undying"
     ]
   }
 }

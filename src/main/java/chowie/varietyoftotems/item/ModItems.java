@@ -7,8 +7,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.component.DeathProtection;
@@ -34,14 +34,14 @@ public class ModItems {
     public static final Item TOTEM_SHARD = registerItem("totem_shard", Item::new, new Item.Properties()
             .stacksTo(5).rarity(Rarity.UNCOMMON));
 
-    private static Item registerItem(String name, Function<Item.Properties, Item> itemFactory, Item.Properties settings) {
+    private static <T extends Item> T registerItem(String name, Function<Item.Properties, T> itemFactory, Item.Properties settings) {
 
         // basically Identifier.of(). It creates variety-of-totems:name
-        ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, ResourceLocation
+        ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, Identifier
                 .fromNamespaceAndPath(VarietyOfTotems.MOD_ID, name));
 
         // attaches the settings to the identifier
-        Item item = itemFactory.apply(settings.setId(itemKey));
+        T item = itemFactory.apply(settings.setId(itemKey));
 
         // adds it to the registry.
         Registry.register(BuiltInRegistries.ITEM, itemKey, item);

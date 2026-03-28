@@ -8,6 +8,8 @@ import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.GameType;
+import org.jspecify.annotations.NonNull;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -28,7 +30,7 @@ public class SpectatorModeTimer implements ServerTickEvents.EndTick {
     }
 
     @Override
-    public void onEndTick(MinecraftServer minecraftServer) {
+    public void onEndTick(@NonNull MinecraftServer minecraftServer) {
         for (ServerPlayer playerEntity : Set.copyOf(playerMap.keySet())) {
             if (playerMap.put(playerEntity, playerMap.getOrDefault(playerEntity, 0L) - 1L) instanceof Long l) {
                 if (l % 20 == 0) {
