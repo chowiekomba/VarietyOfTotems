@@ -5,7 +5,6 @@ import chowie.varietyoftotems.item.ModItems;
 import chowie.varietyoftotems.mixinaccess.GetPositionAccess;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket;
@@ -19,7 +18,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.component.DeathProtection;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
@@ -191,15 +189,15 @@ public abstract class TotemMixin extends Entity {
 				effect.ifPresent(mobEffectReference -> this.forceAddEffect(new MobEffectInstance(mobEffectReference, effectSet.getValue()), null));
 			}
 			int entitiesKilled = 0;
-			List<Entity> entityList = this.level().getEntities(null,
+			List<Entity> entityList = this.level().getEntities(this,
 					AABB.ofSize(this.position(), 20, 20, 20));
 
-			for (int i = 0; i < entityList.size() && i < CONFIG.amountOfHostileEntitiesToKill - 1; i++) {
+			while (entitiesKilled < CONFIG.amountOfHostileEntitiesToKill && !entityList.isEmpty()) {
 				if (entityList.getFirst() instanceof Monster entityToKill) {
 					entityToKill.kill((ServerLevel) this.level());
 					entitiesKilled++;
-					entityList.removeFirst();
 				}
+				entityList.removeFirst();
 			}
 
 			if (((Object) this) instanceof ServerPlayer serverPlayer) {

@@ -36,11 +36,14 @@ public class ModItems {
 
     private static Item registerItem(String name, Function<Item.Properties, Item> itemFactory, Item.Properties settings) {
 
+        // basically Identifier.of(). It creates variety-of-totems:name
         ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM, ResourceLocation
                 .fromNamespaceAndPath(VarietyOfTotems.MOD_ID, name));
 
+        // attaches the settings to the identifier
         Item item = itemFactory.apply(settings.setId(itemKey));
 
+        // adds it to the registry.
         Registry.register(BuiltInRegistries.ITEM, itemKey, item);
 
         return item;
